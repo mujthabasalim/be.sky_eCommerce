@@ -28,6 +28,7 @@ exports.loadHome = async (req, res) => {
     res.render("user/home");
   } catch (error) {
     console.error(error);
+    res.status(500).send('Internal Server Error');
   }
 };
 
@@ -203,8 +204,10 @@ exports.showProduct = async (req, res) => {
 
     // Fetch the user's wishlist if the user is logged in
     let wishlist = [];
+    let cart = {};
     if (req.user) {
-      const userWishlist = await Wishlist.findOne({ userId: req.user.id });
+      const userId = req.user.id
+      const userWishlist = await Wishlist.findOne({ userId: userId });
       if (userWishlist) {
         wishlist = userWishlist.products.map((item) =>
           item.productId.toString()
@@ -222,6 +225,7 @@ exports.showProduct = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
+    res.status(500).send('Internal Server Error');
   }
 };
 
@@ -229,9 +233,15 @@ exports.showProduct = async (req, res) => {
 exports.showProfile = async (req, res) => {
   try {
     const user = await User.findById({ _id: req.user.id });
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found!" });
+    }
     res.render("user/profile", { user });
   } catch (error) {
     console.error(error);
+    res.status(500).send('Internal Server Error');
   }
 };
 
@@ -244,10 +254,7 @@ exports.updateProfile = async (req, res) => {
 
     let profilePicture = user.profilePicture;
     if (req.file) {
-      profilePicture = req.file.path.replace(
-        "C:\\Users\\YASNA UBAID\\Desktop\\Web development\\be.sky",
-        ""
-      );
+      profilePicture = req.file.filename;
     }
 
     const userData = { firstName, lastName, phone, email, profilePicture };
@@ -260,6 +267,7 @@ exports.updateProfile = async (req, res) => {
     }
   } catch (error) {
     console.error(error);
+    res.status(500).send('Internal Server Error');
   }
 };
 
@@ -515,16 +523,20 @@ exports.manageCart = async (req, res) => {
 
   try {
     const userId = req.user.id;
+    const maxQuantity = 3;
 
-    const cart =
-      (await Cart.findOne({ userId })) || new Cart({ userId, items: [] });
+    if (quantity > maxQuantity) {
+      return res.status(400).json({ success: false, message: 'Quantity limit reached.'});
+    }
+
+    const cart = (await Cart.findOne({ userId })) || new Cart({ userId, items: [] });
 
     const product = await Product.findById(productId).select("variants");
     const variant = product.variants.id(variantId);
     const sizeData = variant.sizes.find((s) => s.size === size);
 
     if (!sizeData || sizeData.stock < quantity) {
-      throw new Error("Insufficient stock for the selected size");
+      return res.status(400).json({ success: false, message:"Insufficient stock for the selected size"});
     }
 
     const existingItemIndex = cart.items.findIndex(
@@ -1329,7 +1341,6 @@ exports.showWallet = async (req, res) => {
         },
       },
     ]);
-    console.log(wallet[0].transactions[0]);
 
     res.render("user/wallet", { user, wallet: wallet[0] });
   } catch (error) {

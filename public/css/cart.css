@@ -1,0 +1,42 @@
+.img-fluid {
+  width: 80px;
+}
+
+.image-fluid-sm {
+  width: 120px;
+}
+
+#quantity-input,
+.quantity-input {
+  max-width: 50px;
+  min-width: 30px;
+  padding: 0;
+  border: none;
+}
+
+.quantity-selector {
+  width: max-content;
+  border: solid 1px;
+  border-radius: 5px;
+}
+
+.count-btn {
+  border: none;
+  outline: none;
+  background: none;
+}
+
+.mobile-card p {
+  font-size: 14px;
+}
+
+.mobile-card .btn {
+  font-size: 14px;
+  padding: 5px;
+}
+
+.mobile-card input {
+  font-size: 14px;
+  padding: 4px;
+  max-width: 20px;
+}

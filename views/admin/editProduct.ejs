@@ -116,7 +116,7 @@
                     <% variant.images.forEach((image, imageIndex) => { %>
                       <div class="form-group d-flex flex-column position-relative">
                         <!-- Image preview -->
-                        <img class="img-preview custom-image mb-2" src="<%= image %>" />
+                        <img class="img-preview custom-image mb-2" src="/public/uploads/<%= image %>" />
                 
                         <!-- Hidden input to retain the old image if no new image is uploaded -->
                         <input type="hidden" name="variants[<%= index %>][existingImages][<%= imageIndex %>]" value="<%= image %>">

@@ -1,0 +1,176 @@
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <a href="/shop" id="resetFiltersBtn" class="btn btn-outline-secondary">Reset Filters</a>
+        </div>
+
+        <form id="filtersForm">
+          <div class="accordion" id="filterCollapse">
+            <!-- Categories Filter -->
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#categoryFilter" aria-expanded="false" aria-controls="categoryFilter">
+                  <strong>Categories</strong>
+                </button>
+              </h2>
+              <div id="categoryFilter" class="accordion-collapse collapse" data-bs-parent="#filterCollapse">
+                <div class="accordion-body">
+                  <div class="accordion" id="categoriesAccordion">
+                    <% categories.forEach(category=> { %>
+                      <% if (!category.parentCategory && category.isActive) { %>
+                        <div class="accordion-item border-0">
+                          <p class="accordion-header">
+                            <a class="text-decoration-none text-dark" role="button" data-bs-toggle="collapse"
+                              data-bs-target="#<%= category._id %>Accordion" aria-expanded="true"
+                              aria-controls="<%= category._id %>Accordion">
+                              <%= category.name %>
+                            </a>
+                          </p>
+                          <div id="<%= category._id %>Accordion" class="accordion-collapse collapse"
+                            data-bs-parent="#categoriesAccordion">
+                            <% categories.forEach(subcategory=> { %>
+                              <% if (subcategory.parentCategory &&
+                                String(subcategory.parentCategory._id)===String(category._id) && subcategory.isActive) { %>
+                                <div class="accordion-body py-0">
+                                  <input class="form-check-input filter-checkbox" type="checkbox"
+                                    value="<%= subcategory._id %>" id="<%= subcategory._id %>" name="category">
+                                  <label class="form-check-label" for="<%= subcategory.name %>Check">
+                                    <%= subcategory.name %>
+                                  </label>
+                                </div>
+                                <% } %>
+                                  <% }) %>
+                          </div>
+                        </div>
+                        <% } %>
+                          <% }) %>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Price Filter -->
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#priceFilter" aria-expanded="false" aria-controls="priceFilter">
+                  <strong>Prices</strong>
+                </button>
+              </h2>
+              <div id="priceFilter" class="accordion-collapse collapse" data-bs-parent="">
+                <div class="accordion-body">
+                  <ul class="navbar-nav px-3 ms-2">
+                    <li>
+                      <div class="d-flex align-items-center gap-2">
+                        <input class="form-check-input filter-checkbox" type="checkbox" name="price" value="0-500"
+                          id="price0-500">
+                        <label for="price0-500">0 - 500</label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="d-flex align-items-center gap-2">
+                        <input class="form-check-input filter-checkbox" type="checkbox" name="price" value="500-1000"
+                          id="price500-1000">
+                        <label for="price500-1000">500 - 1000</label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="d-flex align-items-center gap-2">
+                        <input class="form-check-input filter-checkbox" type="checkbox" name="price" value="1000-5000"
+                          id="price1000-5000">
+                        <label for="price1000-5000">1000 - 5000</label>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Color Filter -->
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#colorFilter" aria-expanded="false" aria-controls="colorFilter">
+                  <strong>Colors</strong>
+                </button>
+              </h2>
+              <div id="colorFilter" class="accordion-collapse collapse" data-bs-parent="">
+                <div class="accordion-body">
+                  <ul class="navbar-nav px-3 ms-2">
+                    <li>
+                      <div class="d-flex align-items-center gap-2">
+                        <input class="form-check-input filter-checkbox" type="checkbox" name="color" value="red"
+                          id="colorRed">
+                        <label for="colorRed">Red</label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="d-flex align-items-center gap-2">
+                        <input class="form-check-input filter-checkbox" type="checkbox" name="color" value="blue"
+                          id="colorBlue">
+                        <label for="colorBlue">Blue</label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="d-flex align-items-center gap-2">
+                        <input class="form-check-input filter-checkbox" type="checkbox" name="color" value="green"
+                          id="colorGreen">
+                        <label for="colorGreen">Green</label>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Size Filter -->
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#sizeFilter" aria-expanded="false" aria-controls="sizeFilter">
+                  <strong>Sizes</strong>
+                </button>
+              </h2>
+              <div id="sizeFilter" class="accordion-collapse collapse" data-bs-parent="">
+                <div class="accordion-body">
+                  <ul class="navbar-nav px-3 ms-2">
+                    <li>
+                      <div class="d-flex align-items-center gap-2">
+                        <input class="form-check-input filter-checkbox" type="checkbox" name="size" value="S"
+                          id="sizeS">
+                        <label for="sizeS">S</label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="d-flex align-items-center gap-2">
+                        <input class="form-check-input filter-checkbox" type="checkbox" name="size" value="M"
+                          id="sizeM">
+                        <label for="sizeM">M</label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="d-flex align-items-center gap-2">
+                        <input class="form-check-input filter-checkbox" type="checkbox" name="size" value="L"
+                          id="sizeL">
+                        <label for="sizeL">L</label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="d-flex align-items-center gap-2">
+                        <input class="form-check-input filter-checkbox" type="checkbox" name="size" value="XL"
+                          id="sizeXL">
+                        <label for="sizeXL">XL</label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="d-flex align-items-center gap-2">
+                        <input class="form-check-input filter-checkbox" type="checkbox" name="size" value="XXL"
+                          id="sizeXXL">
+                        <label for="sizeXXL">XXL</label>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>

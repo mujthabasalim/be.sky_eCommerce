@@ -31,7 +31,8 @@
   transform: translateY(-10px);
 }
 
-.product-card .bi-heart , .bi-heart-fill {
+.product-card .bi-heart,
+.bi-heart-fill {
   position: absolute;
   right: 16px;
   top: 16px;
@@ -42,7 +43,6 @@
 .product-img {
   border-radius: 0;
 }
-
 
 .product-card p {
   font-size: var(--12px);
@@ -86,7 +86,6 @@ label {
   border-color: #000;
 }
 
-
 .radio-group {
   display: flex;
   gap: 10px;
@@ -107,7 +106,9 @@ label {
   border: 2px solid #ccc;
   border-radius: 30px;
   cursor: pointer;
-  transition: background-color 0.3s, border-color 0.3s;
+  transition:
+    background-color 0.3s,
+    border-color 0.3s;
   font-size: 12px;
   color: #333;
 }
@@ -123,7 +124,7 @@ label {
 }
 
 /* Style for selected radio buttons */
-.radio-group input[type="radio"]:checked+label {
+.radio-group input[type="radio"]:checked + label {
   background-color: #fff;
   border-color: #000000;
   /* Orange color when selected */
@@ -131,20 +132,19 @@ label {
   box-shadow: 0 0 10px rgba(61, 61, 61, 0.2);
 }
 
-
 /* input error styles */
 .required-star {
   font-size: 0.875rem;
-  color: #DC3545;
+  color: #dc3545;
 }
 
 .error-message {
-  color: #DC3545;
+  color: #dc3545;
   font-size: 0.75rem;
 }
 
 .form-control.is-invalid {
-  border-color: #DC3545;
+  border-color: #dc3545;
 }
 
 .form-control.is-invalid:focus,
@@ -158,7 +158,7 @@ label {
 
 /* ////////////////// */
 .stock {
-  color: #1CD53E;
+  color: #1cd53e;
   background-color: #1cd53e47;
   padding: 2px 6px;
   font-size: var(--12px);
@@ -166,13 +166,12 @@ label {
 }
 
 .stock-out {
-  color: #DC3545;
+  color: #dc3545;
   background-color: #dc354660;
   padding: 2px 6px;
   font-size: var(--12px);
   border-radius: 5px;
 }
-
 
 /* stepper styles */
 
@@ -227,6 +226,7 @@ label {
 /* profile */
 /* Sidebar lg styles */
 .sidebar {
+  z-index: 0;
   background: #fff;
   position: fixed;
   top: 6rem;
@@ -255,15 +255,15 @@ label {
   background-color: #f0f0f0;
 }
 
-
 .content {
+  height: 100vh;
   margin-left: 300px;
   margin-top: 4px;
   padding: 20px;
+  z-index: 1;
 }
 
 @media (max-width: 991.98px) {
-
   .content {
     margin-left: 0;
   }
@@ -277,7 +277,7 @@ label {
 }
 
 .success-label {
-  color: #1CD53E;
+  color: #1cd53e;
   background-color: #1cd53e47;
   padding: 2px 6px;
   font-size: var(--12px);
@@ -285,7 +285,7 @@ label {
 }
 
 .danger-label {
-  color: #DC3545;
+  color: #dc3545;
   background-color: #dc354660;
   padding: 2px 6px;
   font-size: var(--12px);

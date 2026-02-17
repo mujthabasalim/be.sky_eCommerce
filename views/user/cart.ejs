@@ -1,49 +1,5 @@
 <%- include('../partials/header') %>
-
-<style>
-  .img-fluid {
-    width: 80px;
-  }
-
-  .image-fluid-sm {
-    width: 120px;
-  }
-
-  #quantity-input,
-  .quantity-input {
-    max-width: 50px;
-    min-width: 30px;
-    padding: 0;
-    border: none;
-  }
-
-  .quantity-selector {
-    width: max-content;
-    border: solid 1px;
-    border-radius: 5px;
-  }
-
-  .count-btn {
-    border: none;
-    outline: none;
-    background: none;
-  }
-
-  .mobile-card p {
-    font-size: 14px;
-  }
-
-  .mobile-card .btn {
-    font-size: 14px;
-    padding: 5px;
-  }
-
-  .mobile-card input {
-    font-size: 14px;
-    padding: 4px;
-    max-width: 20px;
-  }
-</style>
+<link rel="stylesheet" href="/public/css/cart.css">
 
 <div class="container mt-5">
   <h3 class="mb-4">Shop Cart</h3>
@@ -65,7 +21,7 @@
                 <tr class="align-middle">
                   <td>
                     <div class="d-flex gap-2">
-                      <img src="<%= item.image %>" alt="<%= item.name %>" class="img-fluid align-self-center">
+                      <img src="/public/uploads/<%= item.image %>" alt="<%= item.name %>" class="img-fluid align-self-center">
                       <div class="text-start">
                         <p class="fw-bold m-0"><%= item.name %></p>
                         <p class="m-0 text-black-50" style="font-size: 14px;">Size: <%= item.size %> <span class="ms-1"> | Color: <%= item.color %></span></p>
@@ -98,7 +54,7 @@
         <!-- Mobile View -->
         <% cartItems.forEach(item => { %>
           <div class="d-flex shadow-sm gap-3 mb-3 rounded mobile-card d-md-none">
-            <img src="<%= item.image %>" alt="" class="image-fluid-sm rounded-start">
+            <img src="/public/uploads/<%= item.image %>" alt="" class="image-fluid-sm rounded-start">
             <div class="d-flex flex-column w-100">
               <div class="d-flex justify-content-between">
                 <p class="fw-bold m-0"><%= item.name %></p>
@@ -172,7 +128,7 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    const maxCount = 10;
+    const maxCount = 3;
     const cartUpdateUrl = '/protected/cart/manage';
     const cartDeleteUrl = '/protected/cart/delete';
 
@@ -199,8 +155,7 @@
         } else if (isDecrement && currentQuantity > 1) {
           currentQuantity--;
         } else {
-          createToast('You have reached the maximum limit of ' + maxCount + ' items.', 'error');
-          return;
+          return createToast('Quantity limit reached.', 'error');
         }
 
         // Update quantity in the input

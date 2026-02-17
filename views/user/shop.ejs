@@ -1,472 +1,63 @@
 <%- include('../partials/header') -%>
+<link rel="stylesheet" href="/public/css/shop.css">
 
-  <style>
-    /* Custom styles for color checkboxes */
-    .color-checkbox {
-      appearance: none;
-      width: 20px;
-      height: 20px;
-      border-radius: 3px;
-      border: 1px solid #ddd;
-      margin-right: 8px;
-      position: relative;
-      cursor: pointer;
-    }
+<!-- Breadcrumbs -->
+<div class="breadcrumbs">
+  <a href="/">Home</a> <span>&gt;</span>
+  <span>shop</span>
+</div>
 
-    .color-checkbox:checked::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: currentColor;
-      border-radius: 3px;
-    }
-
-    select {
-      width: max-content;
-      border: none;
-      outline: none;
-      border-radius: 0;
-      padding: 2px;
-      font-size: 12px;
-    }
-
-    .accordion {
-      border: none;
-      border-radius: 0;
-    }
-
-    .accordion-item {
-      border: none;
-      border-bottom: 1px solid #dee2e6;
-    }
-
-    .accordion-button:focus {
-      outline: none;
-      box-shadow: none;
-    }
-
-    .accordion-button:not(.collapsed) {
-      border-bottom: 1px solid #dee2e6;
-      background-color: #fff;
-    }
-  </style>
-  <!-- breadcrumbs -->
-  <div class="breadcrumbs">
-    <a href="/">Home</a> <span>&gt;</span>
-    <span>shop</span>
+<div class="container-fluid mt-5">
+  <!-- Filter Toggle Button for Mobile -->
+  <div class="d-block d-lg-none mb-3">
+    <button class="btn btn-outline-dark w-100" type="button" data-bs-toggle="offcanvas" data-bs-target="#filterOffcanvas" aria-controls="filterOffcanvas">
+      <i class="bi bi-funnel"></i> Filters
+    </button>
   </div>
 
-  <div class="container-fluid mt-5">
-    <div class="row">
-      <!-- Filters Sidebar -->
-      <div class="col-lg-2 mb-2 d-none d-sm-block p-3 filters">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <a href="/shop" id="resetFiltersBtn" class="btn btn-outline-secondary">Reset Filters</a>
-        </div>
+  <div class="row">
+    <!-- Filters Sidebar (Desktop) -->
+    <div class="col-lg-2 mb-2 d-none d-lg-block p-3 filters">
+      <%- include('_shopFilters', { categories: categories }) %>
+    </div>
 
-        <form id="filtersForm">
-          <div class="accordion" id="filterCollapse">
-            <!-- Categories Filter -->
-            <div class="accordion-item">
-              <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                  data-bs-target="#categoryFilter" aria-expanded="false" aria-controls="categoryFilter">
-                  <strong>Categories</strong>
-                </button>
-              </h2>
-              <div id="categoryFilter" class="accordion-collapse collapse" data-bs-parent="#filterCollapse">
-                <div class="accordion-body">
-                  <div class="accordion" id="categoriesAccordion">
-                    <% categories.forEach(category=> { %>
-                      <% if (!category.parentCategory) { %>
-                        <div class="accordion-item border-0">
-                          <p class="accordion-header">
-                            <a class="text-decoration-none text-dark" data-bs-toggle="collapse"
-                              data-bs-target="#<%= category._id %>Accordion" aria-expanded="true"
-                              aria-controls="<%= category._id %>Accordion">
-                              <%= category.name %>
-                            </a>
-                          </p>
-                          <div id="<%= category._id %>Accordion" class="accordion-collapse collapse"
-                            data-bs-parent="#categoriesAccordion">
-                            <% categories.forEach(subcategory=> { %>
-                              <% if (subcategory.parentCategory &&
-                                String(subcategory.parentCategory._id)===String(category._id)) { %>
-                                <div class="accordion-body py-0">
-                                  <input class="form-check-input filter-checkbox" type="checkbox"
-                                    value="<%= subcategory._id %>" id="<%= subcategory._id %>" name="category">
-                                  <label class="form-check-label" for="<%= subcategory.name %>Check">
-                                    <%= subcategory.name %>
-                                  </label>
-                                </div>
-                                <% } %>
-                                  <% }) %>
-                          </div>
-                        </div>
-                        <% } %>
-                          <% }) %>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Price Filter -->
-            <div class="accordion-item">
-              <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                  data-bs-target="#priceFilter" aria-expanded="false" aria-controls="priceFilter">
-                  <strong>Prices</strong>
-                </button>
-              </h2>
-              <div id="priceFilter" class="accordion-collapse collapse" data-bs-parent="">
-                <div class="accordion-body">
-                  <ul class="navbar-nav px-3 ms-2">
-                    <li>
-                      <div class="d-flex align-items-center gap-2">
-                        <input class="form-check-input filter-checkbox" type="checkbox" name="price" value="0-500"
-                          id="price0-500">
-                        <label for="price0-500">0 - 500</label>
-                      </div>
-                    </li>
-                    <li>
-                      <div class="d-flex align-items-center gap-2">
-                        <input class="form-check-input filter-checkbox" type="checkbox" name="price" value="500-1000"
-                          id="price500-1000">
-                        <label for="price500-1000">500 - 1000</label>
-                      </div>
-                    </li>
-                    <li>
-                      <div class="d-flex align-items-center gap-2">
-                        <input class="form-check-input filter-checkbox" type="checkbox" name="price" value="1000-5000"
-                          id="price1000-5000">
-                        <label for="price1000-5000">1000 - 5000</label>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-            <!-- Color Filter -->
-            <div class="accordion-item">
-              <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                  data-bs-target="#colorFilter" aria-expanded="false" aria-controls="colorFilter">
-                  <strong>Colors</strong>
-                </button>
-              </h2>
-              <div id="colorFilter" class="accordion-collapse collapse" data-bs-parent="">
-                <div class="accordion-body">
-                  <ul class="navbar-nav px-3 ms-2">
-                    <li>
-                      <div class="d-flex align-items-center gap-2">
-                        <input class="form-check-input filter-checkbox" type="checkbox" name="color" value="red"
-                          id="colorRed">
-                        <label for="colorRed">Red</label>
-                      </div>
-                    </li>
-                    <li>
-                      <div class="d-flex align-items-center gap-2">
-                        <input class="form-check-input filter-checkbox" type="checkbox" name="color" value="blue"
-                          id="colorBlue">
-                        <label for="colorBlue">Blue</label>
-                      </div>
-                    </li>
-                    <li>
-                      <div class="d-flex align-items-center gap-2">
-                        <input class="form-check-input filter-checkbox" type="checkbox" name="color" value="green"
-                          id="colorGreen">
-                        <label for="colorGreen">Green</label>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-            <!-- Size Filter -->
-            <div class="accordion-item">
-              <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                  data-bs-target="#sizeFilter" aria-expanded="false" aria-controls="sizeFilter">
-                  <strong>Sizes</strong>
-                </button>
-              </h2>
-              <div id="sizeFilter" class="accordion-collapse collapse" data-bs-parent="">
-                <div class="accordion-body">
-                  <ul class="navbar-nav px-3 ms-2">
-                    <li>
-                      <div class="d-flex align-items-center gap-2">
-                        <input class="form-check-input filter-checkbox" type="checkbox" name="size" value="S"
-                          id="sizeS">
-                        <label for="sizeS">S</label>
-                      </div>
-                    </li>
-                    <li>
-                      <div class="d-flex align-items-center gap-2">
-                        <input class="form-check-input filter-checkbox" type="checkbox" name="size" value="M"
-                          id="sizeM">
-                        <label for="sizeM">M</label>
-                      </div>
-                    </li>
-                    <li>
-                      <div class="d-flex align-items-center gap-2">
-                        <input class="form-check-input filter-checkbox" type="checkbox" name="size" value="L"
-                          id="sizeL">
-                        <label for="sizeL">L</label>
-                      </div>
-                    </li>
-                    <li>
-                      <div class="d-flex align-items-center gap-2">
-                        <input class="form-check-input filter-checkbox" type="checkbox" name="size" value="XL"
-                          id="sizeXL">
-                        <label for="sizeXL">XL</label>
-                      </div>
-                    </li>
-                    <li>
-                      <div class="d-flex align-items-center gap-2">
-                        <input class="form-check-input filter-checkbox" type="checkbox" name="size" value="XXL"
-                          id="sizeXXL">
-                        <label for="sizeXXL">XXL</label>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </form>
+    <!-- Filters Offcanvas (Mobile) -->
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="filterOffcanvas" aria-labelledby="filterOffcanvasLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="filterOffcanvasLabel">Filters</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
-
-      <div class="col-lg-10">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <div class="d-flex align-items-center">
-            <i class="bi bi-list-columns" style="font-size: 16px;"></i>
-            <p id="paginationResult" class="m-0 ps-2" style="font-size: 12px;"></p>
-          </div>
-          <div class="bg-light px-2 rounded">
-            <label for="product-sort" class="dropdown-label">Sort by:</label>
-            <select id="product-sort" class="bg-light">
-              <option value="popularity">Popularity</option>
-              <option value="-createdAt">Newest</option>
-              <option value="-price">Price: High to Low</option>
-              <option value="price">Price: Low to High</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="row" id="productsContainer"></div>
-        <div id="pagination" class="d-flex justify-content-end align-items-center mb-5"></div>
+      <div class="offcanvas-body">
+        <%- include('_shopFilters', { categories: categories }) %>
       </div>
     </div>
+
+    <div class="col-lg-10">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="d-flex align-items-center">
+          <i class="bi bi-list-columns" style="font-size: 16px;"></i>
+          <p id="paginationResult" class="m-0 ps-2" style="font-size: 12px;"></p>
+        </div>
+        <div class="bg-light px-2 rounded">
+          <label for="product-sort" class="dropdown-label">Sort by:</label>
+          <select id="product-sort" class="bg-light">
+            <option value="popularity">Popularity</option>
+            <option value="-createdAt">Newest</option>
+            <option value="-price">Price: High to Low</option>
+            <option value="price">Price: Low to High</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row" id="productsContainer"></div>
+      <div id="pagination" class="d-flex justify-content-end align-items-center mb-5"></div>
+    </div>
   </div>
+</div>
 
-  <%- include('../partials/footer') -%>
-
-
-    <script>
-      const fetchProducts = async (params = {}) => {
-        try {
-          const url = new URL('/shop', window.location.origin);
-          Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
-
-          const response = await fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
-          const { products, pagination, wishlist } = await response.json();
-
-          renderProducts(products, wishlist);
-          renderPagination(pagination);
-        } catch (error) {
-          console.error('Error fetching products:', error);
-          createToast('Failed to load products', 'error');
-        }
-      };
-
-      const renderProducts = (products, wishlist) => {
-        const productList = document.getElementById('productsContainer');
-        productList.innerHTML = '';
-
-        const token = "<%= token %>";
-
-        products.forEach(product => {
-          const isInWishlist = wishlist && wishlist.includes(product._id.toString());
-          const productCardTemplate = `
-                      <div class="col-6 col-md-3 mb-4">
-                          <div class="card shadow-sm product-card">
-                              ${token ? `
-                                  <i class="btn-wishlist bi ${isInWishlist ? 'bi-heart-fill text-danger' : 'bi-heart'}"
-                                     data-product-id="${product._id}"
-                                     data-in-wishlist="${isInWishlist ? 'true' : 'false'}"
-                                     style="cursor: pointer;"></i>
-                              ` : `
-                                  <a href="/auth/login"><i class="bi bi-heart" style="color: black;"></i></a>
-                              `}
-                              <a href="/product/${product._id}/0" class="text-decoration-none text-dark">
-                                  ${product.variants[0].images.length > 0 ? `<img src="${product.variants[0].images[0]}" class="product-img card-img-top" alt="${product.name}">` : ''}
-                                  <div class="card-body">
-                                      <p class="card-title mb-1"><strong>${product.brand}</strong></p>
-                                      <p class="card-title mb-0">${product.name} ${product.variants[0].color}</p>
-                                      <p class="card-text m-0">
-                                          &#8377;${product.discountedPrice.toFixed(2)}
-                                          ${product.discountedPrice < product.price ? `
-                                              <del class="text-secondary ms-2">&#8377;${product.price.toFixed(2)}</del>
-                                              <span class="text-danger ms-2">
-                                                  (Save ${(100 * (product.price - product.discountedPrice) / product.price).toFixed(0)}%)
-                                              </span>` : ''}
-                                      </p>
-                                  </div>
-                              </a>
-                          </div>
-                      </div>
-                  `;
-
-          productList.insertAdjacentHTML('beforeend', productCardTemplate);
-        });
-
-        initializeWishlistButtons();
-      };
-      const initializeWishlistButtons = () => {
-        document.querySelectorAll('.btn-wishlist').forEach(heartIcon => {
-          heartIcon.addEventListener('click', async function () {
-            const token = "<%= token %>";
-            if (!token) {
-              window.location.href = "/auth/login";
-              return;
-            }
-
-            const productId = this.dataset.productId;
-            const isInWishlist = this.dataset.inWishlist === 'true';
-
-            try {
-              const response = await fetch(`/protected/wishlist/${isInWishlist ? 'remove' : 'add'}`, {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({ productId })
-              });
-              const result = await response.json();
-
-              if (result.success) {
-                this.dataset.inWishlist = isInWishlist ? 'false' : 'true';
-                if (isInWishlist) {
-                  this.classList.remove('bi-heart-fill');
-                  this.classList.add('bi-heart');
-                  this.style.color = 'black';
-                } else {
-                  this.classList.remove('bi-heart');
-                  this.classList.add('bi-heart-fill');
-                  this.style.color = 'red';
-                }
-              } else {
-                createToast(result.message, 'error');
-              }
-            } catch (error) {
-              console.error('Error updating wishlist:', error);
-              createToast('Failed to update wishlist', 'error');
-            }
-          });
-        });
-      };
-
-      document.getElementById('product-sort').addEventListener('change', function () {
-        const sortOption = this.value;
-        const filters = new URLSearchParams(window.location.search);
-        filters.set('sort', sortOption);
-        fetchProducts({
-          page: filters.get('page') || 1,
-          sort: sortOption,
-          ...Object.fromEntries(filters)
-        });
-      });
-      const handleSortChange = (sortValue) => {
-        const urlParams = new URLSearchParams(window.location.search);
-        urlParams.set('sort', sortValue);
-        fetchProducts(Object.fromEntries(urlParams.entries()));
-      };
-
-      document.querySelectorAll('.filter-checkbox').forEach(checkbox => {
-        checkbox.addEventListener('change', function () {
-          const filters = new URLSearchParams(window.location.search);
-          const filterName = this.name;
-          const filterValue = this.value;
-
-          if (this.checked) {
-            filters.append(filterName, filterValue);
-          } else {
-            filters.delete(filterName);
-          }
-
-          fetchProducts({
-            page: filters.get('page') || 1,
-            sort: filters.get('sort') || '-createdAt',
-            ...Object.fromEntries(filters)
-          });
-        });
-      });
-
-      const handleFilterChange = () => {
-        const formData = new FormData(document.getElementById('filtersForm'));
-        const params = new URLSearchParams();
-
-        formData.forEach((value, key) => {
-          if (key === "category" || key === "color" || key === "size") {
-            params.append(key, value);
-          }
-        });
-
-        fetchProducts(Object.fromEntries(params.entries()));
-      };
-      function renderPagination(pagination) {
-        const paginationContainer = document.getElementById('pagination');
-        const paginationResultContainer = document.getElementById('paginationResult');
-        paginationContainer.innerHTML = '';
-
-        paginationResultContainer.innerHTML = `Showing ${pagination.start} to ${pagination.end} of ${pagination.total} results`;
-
-        const paginationTemplate = `
-                      <nav aria-label="Page navigation">
-                          <ul class="pagination mb-0 d-flex gap-2">
-                              <li class="page-item">
-                                  <button
-                                      class="page-link ${pagination.prevPageUrl ? 'bg-dark' : 'bg-light'}"
-                                      ${pagination.prevPageUrl ? '' : 'disabled'}
-                                      onclick="fetchProducts({ page: ${pagination.currentPage - 1} })"
-                                  >
-                                      <span aria-hidden="true">
-                                          <i class="bx bx-arrow-back ${pagination.prevPageUrl ? 'text-white' : 'text-black'}"></i>
-                                      </span>
-                                  </button>
-                              </li>
-                              <li class="page-item">
-                                  <button
-                                      class="page-link ${pagination.nextPageUrl ? 'bg-dark' : 'bg-light'}"
-                                      ${pagination.nextPageUrl ? '' : 'disabled'}
-                                      onclick="fetchProducts({ page: ${pagination.currentPage + 1} })"
-                                  >
-                                      <span aria-hidden="true">
-                                          <i class="bx bx-arrow-back bx-rotate-180 ${pagination.nextPageUrl ? 'text-white' : 'text-black'}"></i>
-                                      </span>
-                                  </button>
-                              </li>
-                          </ul>
-                      </nav>
-              `;
-        paginationContainer.insertAdjacentHTML('beforeend', paginationTemplate);
-      }
-      document.getElementById('product-sort').addEventListener('change', (e) => {
-        handleSortChange(e.target.value);
-      });
-
-      const filtersForm = document.getElementById('filtersForm');
-      if (filtersForm) {
-        filtersForm.addEventListener('change', handleFilterChange);
-      }
-      fetchProducts({
-        page: new URLSearchParams(window.location.search).get('page') || 1,
-        sort: new URLSearchParams(window.location.search).get('sort') || '-createdAt',
-      });
-    </script>
+<!-- Expose Token for JS -->
+<script>
+  document.body.dataset.userToken = "<%= typeof token !== 'undefined' ? token : '' %>";
+</script>
+<%- include('../partials/footer') -%>
+<script src="/public/js/shop.js"></script>

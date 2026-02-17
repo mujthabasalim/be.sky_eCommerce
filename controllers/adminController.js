@@ -300,7 +300,7 @@ exports.updateUserStatus = async (req, res) => {
     const user = await findEntityById(User, req.params.userId, res);
     if (user) {
       user.status = user.status === "Active" ? "Blocked" : "Active";
-      res.clearCookie("token");
+      // res.clearCookie("token"); // This only clears the cookie for the admin's browser, not the user.
       await user.save();
       return res.status(200).json({ success: true, newStatus: user.status });
     }
@@ -332,7 +332,7 @@ exports.getAllCategories = async (req, res) => {
     }
 
     if (search) {
-      query.$or = [{ type: { $regex: search, $options: "i" } }];
+      query.$or = [{ name: { $regex: search, $options: "i" } }];
     }
 
     const populateOptions = [{ path: "parentCategory", select: "name" }];
@@ -573,10 +573,7 @@ exports.saveProduct = async (req, res) => {
         if (!variantFilesMap[variantIndex]) {
           variantFilesMap[variantIndex] = [];
         }
-        const path = file.path.replace(
-          "C:\\Users\\YASNA UBAID\\Desktop\\Web development\\be.sky",
-          ""
-        );
+        const path = file.filename
         variantFilesMap[variantIndex].push({ imageIndex, path });
       }
     });

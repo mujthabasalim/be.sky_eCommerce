@@ -64,9 +64,19 @@ app.use('/auth', authRoutes);
 app.use('/admin', adminRoutes);
 app.use('/', userRoutes);
 
+// for 404 routes
+app.all('*', (req, res) => {
+  res.render('partials/404');
+});
+
 // Global error handler
 app.use((err, req, res, next) => {
   console.error(err.stack);
+  const statusCode = err.statusCode || 500;
+  if (req.xhr || req.headers.accept.indexOf('json') > -1) {
+    return res.status(statusCode).json({ success: false, message: err.message || 'Server Error' });
+  }
+  res.status(statusCode).render('partials/404', { message: 'Something went wrong!' }); // Re-using 404 partial for now or a generic error view if available
 });
 
 app.listen(PORT, () => console.log(`Server running on port http://localhost:${PORT}`));

@@ -1,208 +1,6 @@
 <%- include('../partials/header') -%>
 
-  <style>
-    .thumbnails {
-      overflow-x: scroll;
-    }
-
-    /* Hide scrollbar for Chrome, Safari and Opera */
-    .thumbnails::-webkit-scrollbar {
-      display: none;
-    }
-
-    /* Hide scrollbar for IE, Edge and Firefox */
-    .thumbnails {
-      -ms-overflow-style: none;
-      /* IE and Edge */
-      scrollbar-width: none;
-      /* Firefox */
-    }
-
-    .product-title {
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
-
-    .price {
-      font-size: 1.25rem;
-      font-weight: bold;
-      color: #333;
-    }
-
-    .original-price {
-      text-decoration: line-through;
-      color: #888;
-      margin-left: 10px;
-    }
-
-    .rating {
-      color: #FFD700;
-      font-size: 1.25rem;
-    }
-
-    .product-colors span {
-      width: 30px;
-      height: 30px;
-      display: inline-block;
-      border-radius: 5px;
-      margin-right: 8px;
-      cursor: pointer;
-    }
-
-    .product-colors span.red {
-      background-color: #ff4d4d;
-    }
-
-    .product-colors span.blue {
-      background-color: #4d79ff;
-    }
-
-    .product-colors span.orange {
-      background-color: #ffa64d;
-    }
-
-    .product-colors span.green {
-      background-color: #66cc66;
-    }
-
-    .product-colors span.black {
-      background-color: #333333;
-    }
-
-    .product-colors span.yellow {
-      background-color: #ffcc00;
-    }
-
-    .product-colors span.pink {
-      background-color: #ff58cd;
-    }
-
-    .product-colors span.white {
-      background-color: #eeeeee;
-    }
-
-    .product-colors span.khaki {
-      background-color: #a68106;
-    }
-
-    .product-colors span.grey {
-      background-color: #626262;
-    }
-
-    .product-size button {
-      margin-right: 10px;
-      margin-bottom: 10px;
-    }
-
-    .product-images img {
-      width: 100%;
-      margin-bottom: 15px;
-    }
-
-    .product-description {
-      margin-top: 30px;
-    }
-
-    #quantity-input {
-      max-width: 50px;
-      min-width: 30px;
-      padding: 0;
-      border: none;
-    }
-
-    .quantity-selector {
-      border: solid 1px;
-      border-radius: 5px;
-    }
-
-    .count-btn {
-      border: none;
-      outline: none;
-      background: none;
-    }
-
-    p {
-      font-size: var(--14px);
-      text-wrap: wrap;
-    }
-
-    .thumbnail-img {
-      border: 2px solid #f9f9f9;
-      transition: border-color 0.3s ease;
-    }
-
-    .thumbnail-img:hover {
-      border-color: #000;
-    }
-
-    /* Ensure that thumbnails take proper size on large screens */
-    .thumbnail-img {
-      width: 100%;
-      max-width: 80px;
-      object-fit: cover;
-    }
-
-    @media (min-width: 992px) {
-      .flex-lg-row {
-        flex-direction: row !important;
-      }
-    }
-
-    .breadcrumbs {
-      margin: 20px;
-    }
-
-    .breadcrumbs a,
-    .breadcrumbs span {
-      text-decoration: none;
-      font-size: var(--12px);
-      color: #000000;
-    }
-
-    .breadcrumbs a:hover {
-      text-decoration: underline;
-    }
-
-    .breadcrumbs span {
-      margin: 0 5px;
-    }
-
-    .rating {
-      display: flex;
-      font-size: 1.5rem;
-      /* Adjust size as needed */
-    }
-
-    .star-filled {
-      color: #FFD700;
-      /* Gold color for filled stars */
-    }
-
-    .star-empty {
-      color: #dcdcdc;
-      /* Gray color for empty stars */
-    }
-
-    /* Style to handle zoom effect */
-    .zoomable {
-      transition: transform 0.3s ease;
-      transform-origin: center center;
-    }
-
-    .main-image {
-      position: relative;
-      overflow: hidden;
-      /* To prevent zooming beyond the container */
-      cursor: crosshair;
-    }
-
-    /* For controlling the zoom scaling */
-    .zoomed {
-      transform: scale(1.6);
-      /* 2x zoom, adjust as per your preference */
-      /* Change cursor to indicate zoom-out */
-    }
-  </style>
+  <link rel="stylesheet" href="/public/css/product-details.css">
   </head>
 
   <body>
@@ -223,8 +21,8 @@
             <div class="thumbnails col-12 col-lg-3 mb-3 mb-lg-0 d-flex flex-lg-column justify-content-center">
               <% variant.images.forEach((image, index)=> { %>
                 <div class="thumbnail-wrapper col-3 col-lg-12 mb-2">
-                  <img src="<%= image %>" alt="Thumbnail <%= index + 1 %>" class="thumbnail-img img-fluid"
-                    style="cursor: pointer;" onclick="updateMainImage('<%= encodeURIComponent(image) %>')">
+                  <img src="/public/uploads/<%= image %>" alt="Thumbnail <%= index + 1 %>" class="thumbnail-img img-fluid"
+                    onclick="updateMainImage('<%= encodeURIComponent(image) %>')">
                 </div>
                 <% }) %>
             </div>
@@ -232,7 +30,7 @@
             <!-- Main Image (With Zoom Effect) -->
             <div class="main-image col-12 col-lg-9">
               <div class="product-images position-relative">
-                <img id="mainImage" src="<%= variant.images[0] %>" alt="Product Image" class="img-fluid zoomable"
+                <img id="mainImage" src="/public/uploads/<%= variant.images[0] %>" alt="Product Image" class="img-fluid zoomable"
                   onmousemove="zoomImage(event)" onmouseleave="resetZoom()">
               </div>
             </div>
@@ -270,7 +68,7 @@
               <span class="text-danger ms-2">
                 (Save <%= ((product.price - product.discountedPrice) / product.price * 100).toFixed(0) %>%)
               </span>
-              <p class="text-secondary m-0 mt-1" style="font-size: 12px;">
+              <p class="text-secondary m-0 mt-1 text-small">
                 <del>&#8377;<%= product.price.toFixed(2) %></del>
               </p>
               <% } %>
@@ -305,12 +103,12 @@
               <input type="text" id="quantity-input" value="1" class="form-control text-center quantity-input" readonly>
               <button class="btn count-btn increment-btn" id="increment-btn" type="button">+</button>
             </div>
-            <button id="addToCartBtn" class="btn btn-dark px-3 ms-3">Add to cart</button>
+            <button id="addToCartBtn" class="btn btn-dark px-3 ms-3" data-product-id="<%= product._id %>" data-variant-id="<%= variant._id %>">Add to cart</button>
             <% if (token) { %>
               <button class="btn-wishlist btn ms-3 <%= wishlist.includes(product._id.toString()) ? 'btn-dark' : 'btn-outline-dark' %>" 
                 data-product-id="<%= product._id %>" 
                 data-in-wishlist="<%= wishlist.includes(product._id.toString()) ? 'true' : 'false' %>" 
-                style="cursor: pointer;"><i class="bi bi-heart"></i></button>
+                ><i class="bi bi-heart"></i></button>
                 <% } else { %>
                   <a href="auth/login"class="btn btn-outline-dark ms-3" ><i class="bi bi-heart"></i></a> 
                   <%} %>
@@ -322,16 +120,16 @@
       <div class="product-description mt-5">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
           <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="description-tab" data-bs-toggle="tab" data-bs-target="#description"
+            <button class="nav-link active text-dark" id="description-tab" data-bs-toggle="tab" data-bs-target="#description"
               type="button" role="tab" aria-controls="description" aria-selected="true">Description</button>
           </li>
           <li class="nav-item" role="presentation">
-            <button class="nav-link" id="additional-info-tab" data-bs-toggle="tab" data-bs-target="#additional-info"
+            <button class="nav-link text-dark" id="additional-info-tab" data-bs-toggle="tab" data-bs-target="#additional-info"
               type="button" role="tab" aria-controls="additional-info" aria-selected="false">Additional
               Information</button>
           </li>
           <li class="nav-item" role="presentation">
-            <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button"
+            <button class="nav-link text-dark" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button"
               role="tab" aria-controls="reviews" aria-selected="false">Reviews</button>
           </li>
         </ul>
@@ -351,200 +149,5 @@
       </div>
     </div>
 
-    <script>
-      document.addEventListener('DOMContentLoaded', function () {
-
-        // Function to update stock display based on selected size
-        function updateStock(stock) {
-          const stockDisplay = document.getElementById('stock-display');
-          if (stock < 10 && stock > 0) {
-            stockDisplay.innerHTML = `<span class="text-danger">Only ${stock} left</span>`;
-          } else if (stock >= 10) {
-            stockDisplay.innerHTML = `<span class="text-success">Available Qty:</span> ${stock}`;
-          }
-          else {
-            stockDisplay.innerHTML = `<span class="text-danger">Out of Stock</span>`;
-          }
-        }
-
-        // Initially focus on the first size button and set its stock display
-        const firstSizeBtn = document.querySelector(".size-btn.active");
-        if (firstSizeBtn) {
-          updateStock(firstSizeBtn.getAttribute("data-stock"));
-        }
-
-        // Add click event listeners to each size button
-        const sizeButtons = document.querySelectorAll(".size-btn");
-        sizeButtons.forEach(button => {
-          button.addEventListener("click", function () {
-            // Get stock value from the clicked button
-            const stock = this.getAttribute("data-stock");
-
-            // Update the stock display
-            updateStock(stock);
-
-            // Remove 'active' class from all buttons and add it to the clicked one
-            sizeButtons.forEach(btn => btn.classList.remove("active"));
-            this.classList.add("active");
-          });
-        });
-      });
-      // Function to update the main image when clicking on a thumbnail
-      function updateMainImage(encodedUrl) {
-        const mainImage = document.getElementById('mainImage');
-        const decodedUrl = decodeURIComponent(encodedUrl);
-        mainImage.src = decodedUrl;
-      }
-
-
-      function zoomImage(event) {
-        const mainImage = document.getElementById('mainImage');
-        const rect = mainImage.getBoundingClientRect();
-
-        // Calculate the mouse position relative to the image
-        const x = event.clientX - rect.left;
-        const y = event.clientY - rect.top;
-
-        // Apply the zoom effect
-        mainImage.classList.add('zoomed');
-
-        // Adjust the transform origin based on where the mouse is
-        const xPercent = (x / mainImage.width) * 100;
-        const yPercent = (y / mainImage.height) * 100;
-        mainImage.style.transformOrigin = `${xPercent}% ${yPercent}%`;
-      }
-
-      function resetZoom() {
-        const mainImage = document.getElementById('mainImage');
-        mainImage.classList.remove('zoomed');
-        mainImage.style.transformOrigin = 'center center'; // Reset to center
-      }
-    </script>
-
-
-    <script>
-      document.addEventListener('DOMContentLoaded', function () {
-        const maxCount = 10;
-
-        document.body.addEventListener('click', async function (event) {
-          const target = event.target;
-          const isIncrement = target.classList.contains('increment-btn');
-          const isDecrement = target.classList.contains('decrement-btn');
-          const quantityInput = target.parentElement.querySelector('.quantity-input');
-          let currentValue = parseInt(quantityInput.value);
-          const maxError = document.getElementById('maxError')
-
-          let newQuantity = currentValue;
-
-          // Handle increment
-          if (isIncrement) {
-            newQuantity = currentValue + 1;
-          } else if (isDecrement && currentValue > 1) {
-            // Handle decrement
-            newQuantity = currentValue - 1;
-          }
-
-          if (newQuantity > maxCount) {
-            return maxError.innerHTML = 'You have reached the maximum limit of ' + maxCount + ' items.'
-          }
-
-          // Update the input field with the new quantity
-          quantityInput.value = newQuantity;
-        })
-        // Handle Add to Cart Button Click
-        const addToCartBtn = document.getElementById('addToCartBtn');
-
-        addToCartBtn.addEventListener('click', async function () {
-          const productId = "<%= product._id %>";
-          const variantId = "<%= variant._id %>";
-          const selectedSizeBtn = document.querySelector(".size-btn.active");
-          const selectedSize = selectedSizeBtn ? selectedSizeBtn.dataset.size : null;
-          const quantity = parseInt(document.getElementById('quantity-input').value);
-
-          if (!selectedSize) {
-            createToast('Please select a size.', 'error');
-            return;
-          }
-
-          const cartData = {
-            productId,
-            variantId,
-            size: selectedSize,
-            quantity,
-          };
-
-          try {
-            const response = await fetch('/protected/cart/manage', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest'
-              },
-              body: JSON.stringify(cartData),
-            });
-
-            // If the user is not logged in, redirect to login
-            if (response.status === 401) {
-              window.location.href = '/auth/login';
-              return;
-            }
-
-            const result = await response.json();
-
-            if (response.ok && result.success) {
-              createToast('Cart updated successfully!', 'success');
-              updateCartItemCount();
-            } else {
-              createToast(result.message || 'An error occurred while updating the cart.', 'error');
-            }
-          } catch (error) {
-            console.error('Error managing cart:', error);
-            createToast('Error managing cart.', 'error');
-          }
-        });
-      });
-
-    </script>
-
-<script>
-  document.querySelectorAll('.btn-wishlist').forEach(heartIcon => {
-    heartIcon.addEventListener('click', async function() {
-      const productId = this.dataset.productId;
-      const isInWishlist = this.dataset.inWishlist === 'true';
-
-      try {
-        const response = await fetch(`/protected/wishlist/${isInWishlist ? 'remove' : 'add'}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ productId })
-        });
-        const result = await response.json();
-
-        if (result.success) {
-          // Toggle the wishlist status
-          this.dataset.inWishlist = isInWishlist ? 'false' : 'true';
-          
-          // Update the class and color based on the new status
-          if (isInWishlist) {
-            // Remove from wishlist: switch to bi-heart and black color
-            this.classList.remove('btn-dark');
-            this.classList.add('btn-outline-dark');
-          } else {
-            // Add to wishlist: switch to bi-heart-fill and red color
-            this.classList.remove('btn-outline-dark');
-            this.classList.add('btn-dark');
-          }
-        } else {
-        createToast(result.message, 'error');
-        }
-      } catch (error) {
-        console.error('Error:', error);
-        createToast('Failed to update wishlist.', 'error');
-      }
-    });
-  });
-</script>
-
     <%- include('../partials/footer') -%>
+    <script src="/public/js/product-details.js"></script>

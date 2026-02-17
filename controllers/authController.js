@@ -1,5 +1,8 @@
 require("dotenv").config();
 const User = require("../models/User");
+const Cart = require("../models/Cart");
+const Wishlist = require("../models/Wishlist");
+const Wallet = require("../models/Wallet");
 const bcrypt = require("bcrypt");
 
 const { capitalizeFirstLetter } = require("../utils/stringUtils");
@@ -30,12 +33,12 @@ exports.resendOTP = async (req, res) => {
   try {
     const email = req.session.user ? req.session.user.email : req.session.email;
     if (!email) {
-      if (type === 'register') {
-        req.flash('error', 'Email not found');
-        res.redirect('/auth/verify-otp')
-      } else if (type === 'reset') { 
-        req.flash('error', 'Email not found');
-        res.redirect('/auth/reset-password')
+      if (type === "register") {
+        req.flash("error", "Email not found");
+        res.redirect("/auth/verify-otp");
+      } else if (type === "reset") {
+        req.flash("error", "Email not found");
+        res.redirect("/auth/reset-password");
       }
     }
     // Generate OTP
@@ -58,7 +61,7 @@ exports.resendOTP = async (req, res) => {
     }
   } catch (error) {
     console.error("Error rendering OTP verification page:", error);
-    req.flash('error', 'An error occurred.');
+    req.flash("error", "An error occurred.");
   }
 };
 
@@ -87,6 +90,24 @@ exports.successGoogleLogin = async (req, res) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
     });
+
+    // create cart wishlist, wallet
+    const userId = user._id;
+    await Cart.findOneAndUpdate(
+      { userId },
+      { $setOnInsert: { items: [] } },
+      { upsert: true, new: true }
+    );
+    await Wishlist.findOneAndUpdate(
+      { userId },
+      { $setOnInsert: { products: [] } },
+      { upsert: true, new: true }
+    );
+    await Wallet.findOneAndUpdate(
+      { userId },
+      { $setOnInsert: { balance: 0, transactions: [] } },
+      { upsert: true, new: true }
+    );
 
     // Redirect to home page
     res.redirect("/");
@@ -137,7 +158,7 @@ exports.register = async (req, res) => {
 
     req.flash(
       "success",
-      `We have shared a OTP to your registered email address <br> <strong>${email}</strong>`
+      `We have shared a OTP to your registered email address <strong>${email}</strong>`
     );
     return res.redirect("/auth/verify-otp");
   } catch (error) {
@@ -171,7 +192,6 @@ exports.verifyOTP = async (req, res) => {
 
     // Create user record
     const user = new User({ firstName, lastName, email, password });
-    await user.save();
 
     // Delete OTP record
     await deleteOTP(email, otp);
@@ -187,6 +207,26 @@ exports.verifyOTP = async (req, res) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
     });
+
+    // create cart wishlist, wallet
+    const userId = user._id;
+    await Cart.findOneAndUpdate(
+      { userId },
+      { $setOnInsert: { items: [] } },
+      { upsert: true, new: true }
+    );
+    await Wishlist.findOneAndUpdate(
+      { userId },
+      { $setOnInsert: { products: [] } },
+      { upsert: true, new: true }
+    );
+    await Wallet.findOneAndUpdate(
+      { userId },
+      { $setOnInsert: { balance: 0, transactions: [] } },
+      { upsert: true, new: true }
+    );
+
+    await user.save();
 
     res.redirect("/");
   } catch (error) {

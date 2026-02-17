@@ -7,6 +7,7 @@ const storage = multer.diskStorage({
     cb(null, path.join(__dirname, '../public/uploads')); // Directory to store images
   },
   filename: (req, file, cb) => {
+    console.log(file)
     const extension = path.extname(file.originalname);
     const fileName = file.originalname
       .split(' ')
