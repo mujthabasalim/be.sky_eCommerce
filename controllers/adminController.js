@@ -14,7 +14,7 @@ const { generateSalesReport } = require("../services/salesReport");
 const { generatePDFReport } = require("../services/pdfService");
 const generateExcelReport = require("../services/excelService");
 const getPaginationData = require("../utils/pagination");
-const WalletService = require("../services/WalletService");
+const WalletService = require("../services/walletService");
 const { createNotification } = require("../services/notificationService");
 const {
   getTopProducts,
