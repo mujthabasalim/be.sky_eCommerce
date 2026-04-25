@@ -127,29 +127,31 @@ exports.loadShop = async (req, res) => {
     if (req.user) {
       const userWishlist = await Wishlist.findOne({ userId: req.user.id });
       if (userWishlist) {
-        wishlist = userWishlist.products.map((item) => item.productId.toString());
+        wishlist = userWishlist.products
+          .filter(item => item.productId)
+          .map((item) => item.productId.toString());
       }
     }
 
     if (req.xhr) {
       return res.json({
-        products: productsWithDiscounts,
-        categories,
+        products: productsWithDiscounts || [],
+        categories: categories || [],
         wishlist,
         pagination,
       });
     } else {
       res.render('user/shop', {
-        products: productsWithDiscounts,
-        categories,
+        products: productsWithDiscounts || [],
+        categories: categories || [],
         wishlist,
         pagination,
         query: req.query,
       });
     }
   } catch (error) {
-    console.error(error);
-    res.status(500).send('An error occurred while loading the shop.');
+    console.error("Error in loadShop:", error);
+    res.status(500).send('An error occurred while loading the shop. Check server logs for details.');
   }
 };
 

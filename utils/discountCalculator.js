@@ -11,14 +11,21 @@ function calculateDiscountedPrice(originalPrice, discountRate, discountType) {
 
 // Function to apply the highest discount from the offers
 const applyHighestDiscount = (product, offers) => {
+  if (!product || !offers || !Array.isArray(offers)) return product?.price || 0;
+
   const applicableOffers = offers.filter((offer) => {
+    if (!offer.typeId) return false;
+
+    const offerTypeId = offer.typeId.toString();
+    
     if (offer.offerType === 'Category') {
-      return (
-        offer.typeId.toString() === product.parentCategory.toString() ||
-        offer.typeId.toString() === product.subCategory.toString()
-      );
+      // Handle both populated and unpopulated category fields
+      const parentId = product.parentCategory?._id ? product.parentCategory._id.toString() : product.parentCategory?.toString();
+      const subId = product.subCategory?._id ? product.subCategory._id.toString() : product.subCategory?.toString();
+      
+      return offerTypeId === parentId || offerTypeId === subId;
     } else if (offer.offerType === 'Product') {
-      return offer.typeId.toString() === product._id.toString();
+      return offerTypeId === product._id.toString();
     }
     return false;
   });
