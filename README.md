@@ -12,6 +12,7 @@
 ## 🚀 Key Features
 
 ### 👤 User Side
+
 - **Authentication**: Secure Login/Signup with Password hashing (Bcrypt) and Google OAuth integration.
 - **Product Discovery**: Search, filter by category, and sort functionality.
 - **Shopping Cart**: Add/Remove items, update quantities, and real-time price calculation.
@@ -23,6 +24,7 @@
 - **Profile Management**: Manage addresses and personal details.
 
 ### 🛡️ Admin Side
+
 - **Advanced Dashboard**: Visual statistics for sales, orders, and users.
 - **Product Management**: CRUD operations for products and categories.
 - **Order Tracking**: Manage order statuses and cancellations.
@@ -50,6 +52,7 @@
 ## ⚙️ Prerequisites
 
 Before you begin, ensure you have the following installed:
+
 - [Node.js](https://nodejs.org/) (v14.x or higher)
 - [MongoDB](https://www.mongodb.com/) (Local or Atlas)
 - A Razorpay Account (for testing payments)
@@ -60,35 +63,38 @@ Before you begin, ensure you have the following installed:
 ## 🔧 Installation & Setup
 
 1. **Clone the repository**
+
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/mujthabasalim/be.sky_eCommerce
    cd be.sky
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Set up Environment Variables**
    Create a `.env` file in the root directory and add the following:
+
    ```env
    PORT=3000
    MONGODB_URI=your_mongodb_uri
    SESSION_SECRET_KEY=your_secret_key
    JWT_SECRET_KEY=your_jwt_secret
-   
+
    # Email Configuration
    EMAIL_SMTP_HOST=smtp.gmail.com
    EMAIL_SMTP_PORT=587
    EMAIL_SMTP_USERNAME=your_email
    EMAIL_SMTP_PASSWORD=your_app_password
-   
+
    # Google OAuth
    GOOGLE_CLIENT_ID=your_client_id
    GOOGLE_CLIENT_SECRET=your_client_secret
    GOOGLE_CALLBACK_URL=http://localhost:3000/auth/google/callback
-   
+
    # Razorpay
    RAZORPAY_ID_KEY=your_key_id
    RAZORPAY_SECRET_KEY=your_key_secret
@@ -96,17 +102,20 @@ Before you begin, ensure you have the following installed:
 
 4. **Seed the database (Optional)**
    To populate the database with test data (admin and user accounts, categories, and products):
+
    ```bash
    node scripts/seed.js
    ```
-   *Default Admin: `admin@example.com` / `adminpassword`*
-   *Default User: `user@example.com` / `userpassword`*
+
+   _Default Admin: `admin@example.com` / `adminpassword`_
+   _Default User: `user@example.com` / `userpassword`_
 
 5. **Run the application**
+
    ```bash
    # Development mode
    npm run dev
-   
+
    # Production mode
    npm start
    ```
@@ -136,4 +145,4 @@ This project is licensed under the ISC License.
 
 ---
 
-*Developed with ❤️ by [Mujthaba Salim](https://github.com/mujthabasalim)*
+_Developed with ❤️ by [Mujthaba Salim](https://github.com/mujthabasalim)_
