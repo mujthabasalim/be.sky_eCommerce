@@ -34,7 +34,7 @@
           <!-- Order Items -->
           <% cartItems.forEach((item, index)=> { %>
             <div class="d-flex align-items-center border-bottom py-3">
-              <img src="/public/uploads/<%= item.image %>" alt="<%= item.name %>" class="product-image me-3">
+              <img src="<%= getImagePath(item.image) %>" alt="<%= item.name %>" class="product-image me-3">
               <div class="order-item-details">
                 <p class="m-0">
                   <%= item.name %>

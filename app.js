@@ -40,6 +40,10 @@ app.use(flash());
 app.use((req, res, next) => {
   res.locals.successMessage = req.flash('success');
   res.locals.errorMessage = req.flash('error');
+  res.locals.getImagePath = (imageName) => {
+    if (!imageName) return '/public/images/placeholder.png'; // Fallback
+    return imageName.startsWith('http') ? imageName : `/public/uploads/${imageName}`;
+  };
   next();
 });
 

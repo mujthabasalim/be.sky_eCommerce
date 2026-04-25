@@ -20,19 +20,17 @@
             <!-- Thumbnails -->
             <div class="thumbnails col-12 col-lg-3 mb-3 mb-lg-0 d-flex flex-lg-column justify-content-center">
               <% variant.images.forEach((image, index)=> { %>
-                <div class="thumbnail-wrapper col-3 col-lg-12 mb-2">
-                  <img src="/public/uploads/<%= image %>" alt="Thumbnail <%= index + 1 %>" class="thumbnail-img img-fluid"
-                    onclick="updateMainImage('<%= encodeURIComponent(image) %>')">
+                <div class="thumbnail-wrapper mb-2">
+                  <img src="<%= getImagePath(image) %>" alt="Thumbnail <%= index + 1 %>" class="thumbnail-img img-fluid"
+                    onclick="changeImage('<%= image %>')">
                 </div>
-                <% }) %>
+              <% }) %>
             </div>
-
-            <!-- Main Image (With Zoom Effect) -->
-            <div class="main-image col-12 col-lg-9">
-              <div class="product-images position-relative">
-                <img id="mainImage" src="/public/uploads/<%= variant.images[0] %>" alt="Product Image" class="img-fluid zoomable"
-                  onmousemove="zoomImage(event)" onmouseleave="resetZoom()">
-              </div>
+            <div class="main-image-container mb-3 text-center border">
+              <% if (variant.images.length > 0) { %>
+                <img id="mainImage" src="<%= getImagePath(variant.images[0]) %>" alt="Product Image" class="img-fluid zoomable"
+                  data-zoom="/public/uploads/<%= variant.images[0] %>">
+              <% } %>
             </div>
           </div>
         </div>

@@ -150,8 +150,8 @@ exports.loadShop = async (req, res) => {
       });
     }
   } catch (error) {
-    console.error("Error in loadShop:", error);
-    res.status(500).send('An error occurred while loading the shop. Check server logs for details.');
+    console.error(error);
+    res.status(500).send('An error occurred while loading the shop.');
   }
 };
 

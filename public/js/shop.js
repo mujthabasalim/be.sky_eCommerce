@@ -57,7 +57,11 @@ const createProductCard = (product, isInWishlist, token) => {
                 <a href="/auth/login"><i class="bi bi-heart" style="color: black;"></i></a>
             `}
             <a href="/product/${product._id}/0" class="text-decoration-none text-dark">
-                ${product.variants[0].images.length > 0 ? `<img src="/public/uploads/${product.variants[0].images[0]}" class="product-img card-img-top" alt="${product.name}">` : ''}
+                ${product.variants[0].images.length > 0 ? (() => {
+                    const img = product.variants[0].images[0];
+                    const imgSrc = img.startsWith('http') ? img : `/public/uploads/${img}`;
+                    return `<img src="${imgSrc}" class="product-img card-img-top" alt="${product.name}">`;
+                })() : ''}
                 <div class="card-body">
                     <p class="card-title mb-1"><strong>${product.brand}</strong></p>
                     <p class="card-title mb-0">${product.name} ${product.variants[0].color}</p>

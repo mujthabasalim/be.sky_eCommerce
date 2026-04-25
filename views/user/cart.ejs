@@ -21,7 +21,7 @@
                 <tr class="align-middle">
                   <td>
                     <div class="d-flex gap-2">
-                      <img src="/public/uploads/<%= item.image %>" alt="<%= item.name %>" class="img-fluid align-self-center">
+                      <img src="<%= getImagePath(item.image) %>" alt="<%= item.name %>" class="img-fluid align-self-center">
                       <div class="text-start">
                         <p class="fw-bold m-0"><%= item.name %></p>
                         <p class="m-0 text-black-50" style="font-size: 14px;">Size: <%= item.size %> <span class="ms-1"> | Color: <%= item.color %></span></p>
