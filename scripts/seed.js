@@ -59,7 +59,17 @@ const seedData = async () => {
     // Initialize User Data
     await Cart.create({ userId: user._id, items: [] });
     await Wishlist.create({ userId: user._id, products: [] });
-    await Wallet.create({ userId: user._id, balance: 1000, transactions: [{ amount: 1000, type: 'credit', description: 'Welcome Bonus', date: new Date() }] });
+    await Wallet.create({ 
+      userId: user._id, 
+      balance: 1000, 
+      transactions: [{ 
+        transactionId: `TXN-${Date.now()}`,
+        amount: 1000, 
+        type: 'credit', 
+        description: 'Welcome Bonus', 
+        date: new Date() 
+      }] 
+    });
 
     // --- 2. Categories ---
     const categories = [
