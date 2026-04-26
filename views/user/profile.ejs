@@ -146,7 +146,7 @@
               </div>
               <div class="col-md-5 d-flex align-items-center justify-content-end">
                 <div class="profile-actions">
-                  <button class="btn btn-light" onclick='openAddressModal("edit", <%= JSON.stringify(address) %>)'>
+                  <button class="btn btn-light edit-address-btn" data-address='<%= JSON.stringify(address) %>'>
                     <i class="bx bx-edit"></i> Edit
                   </button>
                   <form id="deleteAddressForm_<%= address._id %>" action="/protected/delete-address/<%= address._id %>" method="POST">
@@ -455,6 +455,13 @@
 function submitForm() {
     document.getElementById('addressForm').dispatchEvent(new Event('submit'));
 }
+
+document.querySelectorAll('.edit-address-btn').forEach(button => {
+  button.addEventListener('click', function() {
+    const addressData = JSON.parse(this.getAttribute('data-address'));
+    openAddressModal('edit', addressData);
+  });
+});
 
 
 function openAddressModal(mode, address = null) {
