@@ -963,6 +963,21 @@ exports.verifyPayment = async (req, res) => {
 
     // Compare the generated signature with the Razorpay signature
     if (generatedSignature === razorpaySignature) {
+      // Reduce stock for Razorpay payments after successful verification
+      for (const item of order.items) {
+        const product = await Product.findById(item.productId);
+        if (product) {
+          const variant = product.variants.id(item.variantId);
+          if (variant) {
+            const sizeObj = variant.sizes.find((s) => s.size === item.size);
+            if (sizeObj) {
+              sizeObj.stock -= item.quantity;
+              await product.save();
+            }
+          }
+        }
+      }
+
       // Update order status to 'paid' on successful payment
       order.paymentStatus = "paid";
       order.razorpayPaymentId = razorpayPaymentId;
