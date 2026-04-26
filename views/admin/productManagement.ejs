@@ -184,7 +184,8 @@ aria-hidden="true"
 
               let variantImages = '';
               variant.images.forEach(image => {
-                  variantImages += `<img src="../public/uploads/${image}" alt="Variant Image" class="img-thumbnail me-2" style="width: 100px; height: 100px;">`;
+                  const imagePath = image.startsWith('http') ? image : `../public/uploads/${image}`;
+                  variantImages += `<img src="${imagePath}" alt="Variant Image" class="img-thumbnail me-2" style="width: 100px; height: 100px;">`;
               });
 
               variantBlock.innerHTML = `

@@ -54,7 +54,7 @@
         <!-- Mobile View -->
         <% cartItems.forEach(item => { %>
           <div class="d-flex shadow-sm gap-3 mb-3 rounded mobile-card d-md-none">
-            <img src="/public/uploads/<%= item.image %>" alt="" class="image-fluid-sm rounded-start">
+            <img src="<%= getImagePath(item.image) %>" alt="" class="image-fluid-sm rounded-start">
             <div class="d-flex flex-column w-100">
               <div class="d-flex justify-content-between">
                 <p class="fw-bold m-0"><%= item.name %></p>

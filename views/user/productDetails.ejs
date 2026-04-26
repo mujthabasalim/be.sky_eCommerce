@@ -29,7 +29,7 @@
             <div class="main-image-container mb-3 text-center border">
               <% if (variant.images.length > 0) { %>
                 <img id="mainImage" src="<%= getImagePath(variant.images[0]) %>" alt="Product Image" class="img-fluid zoomable"
-                  data-zoom="/public/uploads/<%= variant.images[0] %>">
+                  data-zoom="<%= getImagePath(variant.images[0]) %>">
               <% } %>
             </div>
           </div>

@@ -120,7 +120,7 @@
         <% order.items.forEach((item, index)=> { %>
           <div class="d-flex flex-column flex-md-row align-items-center justify-content-between py-3 border-bottom">
             <div class="d-flex align-self-start">
-              <img src="/public/uploads/<%= item.image %>" alt="<%= item.name %>" class="product-image me-3">
+              <img src="<%= getImagePath(item.image) %>" alt="<%= item.name %>" class="product-image me-3">
               <div>
                 <p class="m-0" style="text-wrap: nowrap;">
                   <%= item.name %>
