@@ -256,7 +256,7 @@ exports.updateProfile = async (req, res) => {
 
     let profilePicture = user.profilePicture;
     if (req.file) {
-      profilePicture = req.file.filename;
+      profilePicture = req.file.path;
     }
 
     const userData = { firstName, lastName, phone, email, profilePicture };

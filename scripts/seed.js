@@ -141,7 +141,7 @@ const seedData = async () => {
       // Women
       {
         name: "Floral Summer Dress",
-        brand: "Bloom",
+        brand: "  ",
         parent: "Women",
         sub: "Dresses",
         price: 2499,

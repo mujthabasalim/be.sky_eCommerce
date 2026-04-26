@@ -573,7 +573,7 @@ exports.saveProduct = async (req, res) => {
         if (!variantFilesMap[variantIndex]) {
           variantFilesMap[variantIndex] = [];
         }
-        const path = file.filename
+        const path = file.path;
         variantFilesMap[variantIndex].push({ imageIndex, path });
       }
     });
