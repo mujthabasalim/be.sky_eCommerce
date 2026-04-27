@@ -4,6 +4,7 @@
 [![Express](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
 [![EJS](https://img.shields.io/badge/EJS-A91E50?style=for-the-badge&logo=ejs&logoColor=white)](https://ejs.co/)
+[![Cloudinary](https://img.shields.io/badge/Cloudinary-3448C5?style=for-the-badge&logo=cloudinary&logoColor=white)](https://cloudinary.com/)
 
 **be.sky** is a full-featured, responsive E-commerce platform built with the Node.js ecosystem. It provides a seamless shopping experience for users and a robust management system for administrators.
 
@@ -21,12 +22,12 @@
 - **Order Management**: Track order status, view history, and download invoices (PDF).
 - **Wallet System**: In-app wallet for refunds and quick payments.
 - **Coupons & Offers**: Apply discount codes and view active product/category offers.
-- **Profile Management**: Manage addresses and personal details.
+- **Profile Management**: Manage addresses and personal details with Cloudinary-backed profile pictures.
 
 ### 🛡️ Admin Side
 
 - **Advanced Dashboard**: Visual statistics for sales, orders, and users.
-- **Product Management**: CRUD operations for products and categories.
+- **Product Management**: CRUD operations for products and categories with permanent image storage on Cloudinary.
 - **Order Tracking**: Manage order statuses and cancellations.
 - **User Management**: Block/Unblock users and view activity.
 - **Coupon System**: Create and manage promotional codes.
@@ -45,7 +46,7 @@
 - **Styling**: CSS3, Vanilla JS
 - **File Uploads**: Multer
 - **Emails**: Nodemailer
-- **Utilities**: Winston (Logging), Moment.js, PDFKit, ExcelJS
+- **Utilities**: Cloudinary (Image Storage), Winston (Logging), PDFKit, ExcelJS
 
 ---
 
@@ -98,6 +99,11 @@ Before you begin, ensure you have the following installed:
    # Razorpay
    RAZORPAY_ID_KEY=your_key_id
    RAZORPAY_SECRET_KEY=your_key_secret
+
+   # Cloudinary
+   CLOUDINARY_CLOUD_NAME=your_cloud_name
+   CLOUDINARY_API_KEY=your_api_key
+   CLOUDINARY_API_SECRET=your_api_secret
    ```
 
 4. **Seed the database (Optional)**
